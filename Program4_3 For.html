@@ -1,0 +1,49 @@
+<meta charset="utf-8">
+<script>
+	//var ContinueGame = true
+
+	do
+	{
+		var WinNo =  Math.floor(Math.random() * 20) + 1
+		alert('Подсказка для проверки: Рандомный номер ' + WinNo)
+		var win = false
+
+		for (i = 1; i <= 3; i++)
+		{
+			var UserNo = Number(prompt("Введите номер " + i + " лотерейного билета:"))
+
+			if ((UserNo >= 1) && (UserNo <= 20))
+			{
+				if (UserNo == WinNo)
+				{
+					win = true
+					alert("Поздравляем! Выиграл билет номер " + WinNo)
+					break
+				}
+				else if (Math.abs(UserNo - WinNo) == 1)
+				{
+					alert("Почти угадали!")
+				}
+				else if (Math.abs(UserNo - WinNo) > 1)
+				{
+					alert("Не угадали!")
+				}
+			}
+			else
+			{
+				alert("Вы ввели неправильный номер ")
+			}
+		}	
+				
+		if (!win)
+		{
+			alert("К сожалению, вы проиграли. Победил номер " + WinNo)
+		}	
+
+		//var ContinueGame = confirm('Хотите сыграть еще раз?')
+		win = confirm('Хотите сыграть еще раз?')
+		
+	}
+	//while (ContinueGame)
+	while (win)
+</script>

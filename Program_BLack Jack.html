@@ -1,0 +1,55 @@
+<meta charset="utf-8">
+<script>
+		function getRandomInt (min, max)
+		{
+			return Math.floor(Math.random() * (max - min + 1)) + min
+		}
+
+		function getCard (arr)
+		{
+			return arr[getRandomInt(0, cards.length - 1)]
+		}
+
+		function getSum (arr)
+		{
+			var sum = 0
+			var cardsNumb = ['2', '3', '4', '5', '6', '7', '8', '9', '10']
+						
+			for (var i = 0; i < arr.length; i++)
+			{
+				if (arr[i] != 'A')
+				{
+					if (cardsNumb.includes(arr[i]))
+					{
+						sum = sum + parseInt(arr[i])
+					}
+					else
+					{
+						sum = sum + 10
+					}	
+				}			
+			}
+				if (arr.includes('A'))
+				{
+					if (sum <= 10)
+					{
+						sum = sum + 11
+					}
+					else
+					{
+						sum = sum + 1
+					}
+				}
+			return sum
+		}
+	do
+	{
+		var cards = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+		var dealer = [getCard (cards)]
+		var player = [getCard (cards), getCard (cards), getCard (cards)]
+
+
+		alert('Дилер: ' + dealer + '  Игрок: ' + player + '\nСумма очков дилера: ' + getSum(dealer) + '  Сумма очков игрока: ' + getSum(player))
+	}
+	while (confirm('Проверим еще раз?'))
+</script>

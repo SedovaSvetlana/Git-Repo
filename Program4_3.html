@@ -1,0 +1,61 @@
+<meta charset="utf-8">
+<script>
+	var WinNo = 5
+
+	var UserNo1 = prompt("Введите номер первого лотерейного билета:")
+
+	if ((UserNo1 < 1) || (UserNo1 > 20))
+	{
+		alert("Вы ввели неправильный номер ")
+	}
+	else
+	{
+		if ((UserNo1 - WinNo <= 1) || (UserNo1 - WinNo >= -1))
+		{
+		alert("Почти угадали!")
+		}
+		var UserNo2 = prompt("Введите номер второго лотерейного билета:")
+		if ((UserNo2 < 1) || (UserNo2 > 20))
+		{
+			alert("Вы ввели неправильный номер ")
+		}
+		else
+		{
+			var UserNo3 = prompt("Введите номер третьего лотерейного билета:")
+			if ((UserNo3 < 1) || (UserNo3 > 20))
+			{
+			alert("Вы ввели неправильный номер ")
+			}
+			else if ((UserNo1 == WinNo) || (UserNo2 == WinNo) || (UserNo3 == WinNo))
+			{
+				alert("Выиграл билет номер " + WinNo)
+			}
+			else
+			{
+				alert("К сожалению, вы не выиграли. Победил номер " + WinNo)
+			}
+		}
+	}
+
+
+	/*else
+	{
+		alert("Вы ввели неправильный номер ")
+	}
+	
+	if ((UserNo >= 1) && (UserNo <= 20))
+	{
+		if ((UserNo1 == WinNo) || (UserNo2 == WinNo) || (UserNo3 == WinNo))
+		{
+			alert("Выиграл билет номер " + WinNo)
+		}
+		else 
+		{
+			alert("К сожалению, вы не выиграли. Победил номер " + WinNo)
+		}
+	}
+	else
+	{
+		alert("Вы ввели неправильный номер ")
+	}*/
+</script>

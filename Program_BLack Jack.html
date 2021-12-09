@@ -13,23 +13,21 @@
 		function getSum (arr)
 		{
 			var sum = 0
-			var cardsNumb = ['2', '3', '4', '5', '6', '7', '8', '9', '10']
 						
 			for (var i = 0; i < arr.length; i++)
 			{
-				if (arr[i] != 'A')
+				if ((arr[i] == 'J') || (arr[i] == 'Q') || (arr[i] == 'K'))
 				{
-					if (cardsNumb.includes(arr[i]))
-					{
-						sum = sum + parseInt(arr[i])
-					}
-					else
-					{
-						sum = sum + 10
-					}	
+					sum = sum + 10
+				}	
+				else if (arr[i] != 'A')
+				{
+					sum = sum + parseInt(arr[i])
 				}			
 			}
-				if (arr.includes('A'))
+			for (var i = 0; i < arr.length; i++)
+			{
+				if (arr[i] == 'A')
 				{
 					if (sum <= 10)
 					{
@@ -38,18 +36,71 @@
 					else
 					{
 						sum = sum + 1
-					}
-				}
+					}	
+				}	
+			}
 			return sum
 		}
+
+		function getStatus()
+		{
+			return 'Дилер: ' + dealer + '  Игрок: ' + player + '\nСумма очков дилера: ' + getSum(dealer) + '  Сумма очков игрока: ' + getSum(player)
+		}
+
+
 	do
 	{
 		var cards = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+		var player = [getCard (cards), getCard (cards)]
 		var dealer = [getCard (cards)]
-		var player = [getCard (cards), getCard (cards), getCard (cards)]
+
+		alert(getStatus())
 
 
-		alert('Дилер: ' + dealer + '  Игрок: ' + player + '\nСумма очков дилера: ' + getSum(dealer) + '  Сумма очков игрока: ' + getSum(player))
+		if (getSum(player) == 21)
+		{
+			alert('Black Jack! Поздравляем, вы выиграли!')
+		}
+		else
+		{
+			while ((getSum(player) < 21) && (confirm('Добавить еще одну карту?')))
+			{
+				player.push(getCard (cards))
+				alert(getStatus())
+			}
+			
+			if (getSum(player) > 21)
+			{
+				alert('Перебор! Вы проиграли!')
+			}
+			else
+			{
+				while (getSum(dealer) < 17)
+				{
+					dealer.push(getCard (cards))
+				}
+		
+				alert('Дилер взял карты')
+				alert(getStatus())
+
+				if (getSum(dealer) > 21)
+				{
+					alert('У дилера перебор! Вы выиграли!')
+				}
+				else if (getSum(dealer) == getSum(player))
+				{
+					alert('Ровно! Ничья.')
+				}
+				else if (getSum(dealer) < getSum(player))
+				{
+					alert('Вы выиграли!')
+				}
+				else
+				{
+					alert('Вы проиграли!')
+				}
+			}
+		}
 	}
 	while (confirm('Проверим еще раз?'))
 </script>

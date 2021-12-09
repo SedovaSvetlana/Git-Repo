@@ -1,0 +1,253 @@
+<meta charset="utf-8">
+<script>
+		function getRandomInt (min, max)
+		{
+			return Math.floor(Math.random() * (max - min + 1)) + min
+		}
+
+		function getCard (arr)
+		{
+			return arr[getRandomInt(0, cards.length - 1)]
+		}
+
+		function getSum (arr)
+		{
+			var sum = 0
+						
+			for (var i = 0; i < arr.length; i++)
+			{
+				if ((arr[i] == 'J') || (arr[i] == 'Q') || (arr[i] == 'K'))
+				{
+					sum = sum + 10
+				}	
+				else if (arr[i] != 'A')
+				{
+					sum = sum + parseInt(arr[i])
+				}			
+			}
+			for (var i = 0; i < arr.length; i++)
+			{
+				if (arr[i] == 'A')
+				{
+					if (sum <= 10)
+					{
+						sum = sum + 11
+					}
+					else
+					{
+						sum = sum + 1
+					}	
+				}	
+			}
+			return sum
+		}
+
+		function getStack()
+		{
+			PlayerStack = parseInt(prompt('Укажите ваш начальный стэк (количество фишек). Минимум 100.'))
+
+			while (PlayerStack  < 100)
+			{
+				PlayerStack = parseInt(prompt('Чтобы начать игру у вас должно быть не меньше 100 фишек '))
+			}
+		}
+
+		function getBet()
+		{
+			if (PlayerStack < 50) 
+			{
+				alert('К сожалению, ваших фишек не хватает, чтобы сделать минимальную ставку. Осталось фишек: ' + PlayerStack)
+				return false
+			}
+			
+			do
+			{
+				PlayerBet = parseInt(prompt('Сделайте вашу ставку. Мин. ставка - 50. Осталось фишек: ' + PlayerStack))
+
+				var littleBet = PlayerBet < 50
+				var BetBiggerStack = PlayerBet > PlayerStack
+
+				if (littleBet)
+				{
+					alert('Cтавка должна быть не меньше 50. Введите корректную ставку.  Осталось фишек: ' + PlayerStack)
+				}
+				if (BetBiggerStack)
+				{
+					alert('К сожалению, ваших фишек не хватает, чтобы сделать такую ставку. Осталось фишек: ' + PlayerStack)
+				}
+			}
+			while (littleBet || BetBiggerStack)
+			return true
+		}
+
+		function getStatus()
+		{
+			return 'Дилер: ' + dealer + '  Игрок: ' + player + '\nСумма очков дилера: ' + getSum(dealer) + '  Сумма очков игрока: ' + getSum(player)
+		}
+
+		function getStartCards()
+		{
+			player = [getCard (cards), getCard (cards)]
+			dealer = [getCard (cards)]
+
+			//player = ['Q', '8', '3']
+			//dealer = ['A']		
+		}
+
+		function OverflowCheck(arr)
+		{
+			if (getSum(arr) > 21)
+			{
+				return true
+			}
+		}
+
+		function getPlayerCards()
+		{
+			if (getSum(player) == 21)
+			{
+				if (dealer[0] == 'A')
+				{
+					if (confirm('Black Jack! Хотите забрать выигрыш 1:1?'))
+					{
+						PlayerStack = PlayerStack + PlayerBet
+						alert('Поздравляем, вы выиграли!')
+						return false
+					}
+					else
+					{
+						return true
+					}
+				}
+				else
+				{
+					PlayerStack = PlayerStack + (PlayerBet * 1.5)
+					alert('Black Jack! Поздравляем, вы выиграли!')
+					return false
+				}
+			}
+			else
+			{
+				if (confirm(getStatus() + '\n\n хотите сделать Пас?'))
+				{
+					PlayerStack = PlayerStack - PlayerBet / 2
+					return false
+				}
+				else
+				{
+					while ((getSum(player) < 21) && (confirm('Добавить еще одну карту?')))
+					{
+						player.push(getCard (cards))
+						alert(getStatus())
+					}
+					if (OverflowCheck(player))
+					{
+						PlayerStack = PlayerStack - PlayerBet
+						alert('Перебор! Вы проиграли!')
+						return false
+					}
+				}
+			}
+			return true
+		}
+
+		function getDealerCards()
+		{
+			while (getSum(dealer) < 17)
+			{
+				dealer.push(getCard (cards))		
+			}
+			alert('Дилер взял карты')
+			alert(getStatus())
+			
+			if (OverflowCheck(dealer))
+			{
+				if (getSum([player[0], player[1]]) == 21) 
+				{
+					alert('У дилера перебор! Вы выиграли! 3:2 BJ')
+					PlayerStack = PlayerStack + (PlayerBet * 1.5)
+				}
+				else
+				{
+					alert('У дилера перебор! Вы выиграли!')
+					PlayerStack = PlayerStack + PlayerBet
+				}
+				return false
+			}
+			if (getSum([dealer[0], dealer[1]]) == 21) 
+			{
+				if (getSum(player) < 21)
+				{
+					PlayerStack = PlayerStack - PlayerBet
+					alert('У дилера Black Jack! Вы проиграли!')
+					return false
+				}
+				else
+				{
+					alert('У дилера Black Jack! Ничья!')
+					return false
+				}
+				
+			}
+			return true
+		}
+		
+		function WinnerCheck()
+		{
+			if (getSum(dealer) == getSum(player))
+			{
+				alert('Ровно! Ничья.')
+			}
+			else if (getSum(dealer) < getSum(player))
+			{
+				if (getSum([player[0], player[1]]) == 21) 
+				{
+					PlayerStack = PlayerStack + (PlayerBet * 1.5)
+					alert('Вы выиграли! Ставка 3:2 BJ!')
+				}
+				else
+				{
+					PlayerStack = PlayerStack + PlayerBet
+					alert('Вы выиграли! ')
+				}
+				
+			}
+			else
+			{
+				PlayerStack = PlayerStack - PlayerBet
+				alert('Вы проиграли!')
+			}
+		}
+
+		do
+		{
+			var cards = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+			var player = []
+			var dealer = []
+			var PlayerBet = 0
+			var PlayerStack = 0
+
+			getStack()
+
+			do
+			{
+				if (!getBet())
+				{
+					break
+				}
+				getStartCards()
+				
+				if (!getPlayerCards())
+				{
+					continue
+				}
+				if (!getDealerCards())
+				{
+					continue
+				}
+				WinnerCheck()
+			}
+			while (confirm('Сыграем еще раз? У вас осталось ' + PlayerStack + ' фишек'))
+		}
+		while (confirm('Начать игру заново?'))
+</script>
